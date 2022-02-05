@@ -3,10 +3,13 @@ package main
 import (
 	"net/http"
 
+	"./utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	inFiles := []string{"in1.pdf", "in2.pdf"}
+	utils.MergePdfFile(inFiles)
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
