@@ -2,14 +2,14 @@ package main
 
 import (
 	"net/http"
+	"pdfcraft/utils"
 
-	"./utils"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	inFiles := []string{"in1.pdf", "in2.pdf"}
-	utils.MergePdfFile(inFiles)
+	// inFiles := []string{"in1.pdf", "in2.pdf"}
+	utils.MergePdfFile()
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
