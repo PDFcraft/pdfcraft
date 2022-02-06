@@ -1,11 +1,18 @@
-<!--index.html-->
+<!doctype html>
+<html lang="en">
 
-<!--Embed the header.html template at this location-->
-{{ template "header.html" .}}
+<head>
+    <meta charset="utf-8">
+    <title>Multiple file upload</title>
+</head>
 
-<div class="wrap">
-    body tag안 div 입니다.
-</div>
+<body>
+    <h1>Upload multiple files with fields</h1>
 
-<!--Embed the footer.html template at this location-->
-{{ template "footer.html" .}}
+    <form action="/merge" method="post" enctype="multipart/form-data">
+        Files: <input type="file" name="files" multiple><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>
