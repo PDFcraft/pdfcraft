@@ -42,7 +42,10 @@ func main() {
 		}
 		utils.MergePdfFile(inFiles)
 		c.HTML(http.StatusOK, "merge.html", gin.H{})
+	})
 
+	router.GET("merge", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "merge.html", gin.H{})
 	})
 
 	router.GET("/download", handleFunc)
