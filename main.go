@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	// inFiles := []string{"in1.pdf", "in2.pdf"}
-	utils.MergePdfFile()
+	inFiles := []string{"in1.pdf", "in2.pdf"}
+	utils.MergePdfFile(inFiles)
 	r := gin.Default()
 
 	r.LoadHTMLGlob("templates/*")
@@ -23,5 +23,4 @@ func main() {
 	})
 
 	r.Run()
-
 }
