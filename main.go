@@ -3,52 +3,51 @@ package main
 import (
 	"net/http"
 	"path/filepath"
-	"pdfcraft/utils"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
-func handleFunc(c *gin.Context) {
-	// file path in server
-	c.File("out.pdf")
+func saveFileHandler(c *gin.Context) {
+	form, err := c.MultipartForm()
+	if err != nil {
+		c.String(http.StatusBadRequest, "get form err: %s", err.Error())
+		return
+	}
+	files := form.File["files"]
+
+	// The file cannot be received.
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": "No file is received",
+		})
+		return
+	}
+
+	for _, file := range files {
+		extension := filepath.Ext(file.Filename)
+		newFileName := uuid.New().String() + extension
+		if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+				"message": "Unable to save the file",
+			})
+			return
+		}
+
+	}
+	// File saved successfully. Return proper result
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Your file has been successfully uploaded.",
+	})
 }
 
 func main() {
 	router := gin.Default()
-	// Set a lower memory limit for multipart forms (default is 32 MiB)
-	router.MaxMultipartMemory = 8 << 20 // 8 MiB
-	router.LoadHTMLGlob("templates/*")
 
 	router.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 
-	inFiles := []string{}
-
-	router.POST("/merge", func(c *gin.Context) {
-		form, err := c.MultipartForm()
-		if err != nil {
-			c.String(http.StatusBadRequest, "get form err: %s", err.Error())
-			return
-		}
-		files := form.File["files"]
-		for _, file := range files {
-			filename := filepath.Base(file.Filename)
-			inFiles = append(inFiles, filename)
-			if err := c.SaveUploadedFile(file, filename); err != nil {
-				c.String(http.StatusBadRequest, "upload file err: %s", err.Error())
-				return
-			}
-		}
-		utils.MergePdfFile(inFiles)
-		c.HTML(http.StatusOK, "merge.html", gin.H{})
-	})
-
-	router.GET("merge", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "merge.html", gin.H{})
-	})
-
-	router.GET("/download", handleFunc)
-
+	router.POST("/merge", saveFileHandler)
 	router.Run(":8080")
 }
