@@ -17,7 +17,6 @@ func saveFileHandler(c *gin.Context) {
 	}
 	files := form.File["files"]
 
-	// The file cannot be received.
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": "No file is received",
@@ -28,8 +27,7 @@ func saveFileHandler(c *gin.Context) {
 	for i, file := range files {
 		extension := filepath.Ext(file.Filename)
 		newFileName := uuid.New().String() + extension
-		// originFileName := filepath.Base(file.Filename)
-
+		// Linking uuid with sent order with dict
 		recvFiles[i] = newFileName
 		if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
@@ -39,6 +37,7 @@ func saveFileHandler(c *gin.Context) {
 		}
 
 	}
+
 	// File saved successfully. Return proper result
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Your file has been successfully uploaded.",
