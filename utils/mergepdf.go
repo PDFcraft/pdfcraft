@@ -44,14 +44,7 @@ func MergeHandler(c *gin.Context) {
 	var mergedFileName = originName[recvFiles[0]][0:len(originName[recvFiles[0]])-4] + "-merged" + ".pdf"
 	// var name = TrimRight(originName[recvFiles[0]], ".pdf")
 	mergePdfFile(recvFiles, mergedFileName)
-	// File saved successfully. Return proper result
-	c.JSON(http.StatusOK, gin.H{
-		"message":        "Your file has been successfully uploaded.",
-		"files":          recvFiles,
-		"originName":     originName,
-		"mergedFileName": mergedFileName,
-	})
-
+	c.File("./output/" + mergedFileName)
 }
 
 func mergePdfFile(recvFiles map[int]string, mergedFileName string) {

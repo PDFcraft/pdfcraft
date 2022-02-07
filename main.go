@@ -11,5 +11,7 @@ func main() {
 
 	router.POST("/merge", utils.MergeHandler)
 
+	router.GET("/download=:fileid", utils.Download)
+
 	router.Run(":8080")
 }
