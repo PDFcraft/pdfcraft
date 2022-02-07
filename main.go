@@ -55,8 +55,8 @@ func main() {
 	})
 
 	router.POST("/merge", saveFileHandler)
-	router.GET("/merge", func(c *gin.Context) {
-	})
+	// router.GET("/merge", func(c *gin.Context) {
+	// })
 
 	router.Run(":8080")
 }
