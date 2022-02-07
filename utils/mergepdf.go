@@ -1,10 +1,16 @@
 package utils
 
 import (
+	"fmt"
+
 	pdfcpu "github.com/pdfcpu/pdfcpu/pkg/api"
 )
 
-func MergePdfFile(inFiles []string) {
-	// inFiles := []string{"in1.pdf", "in2.pdf"}
-	pdfcpu.MergeCreateFile(inFiles, "out.pdf", nil)
+func MergePdfFile(recvFiles map[int]string) {
+	inFiles := []string{}
+	for _, filename := range recvFiles {
+		inFiles = append(inFiles, "./temp/"+filename)
+	}
+	fmt.Print(inFiles)
+	pdfcpu.MergeCreateFile(inFiles, "./output/merged.pdf", nil)
 }

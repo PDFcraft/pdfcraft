@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"path/filepath"
+	"pdfcraft/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -23,10 +24,13 @@ func saveFileHandler(c *gin.Context) {
 		})
 		return
 	}
-
-	for _, file := range files {
+	recvFiles := make(map[int]string)
+	for i, file := range files {
 		extension := filepath.Ext(file.Filename)
 		newFileName := uuid.New().String() + extension
+		// originFileName := filepath.Base(file.Filename)
+
+		recvFiles[i] = newFileName
 		if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Unable to save the file",
@@ -38,7 +42,10 @@ func saveFileHandler(c *gin.Context) {
 	// File saved successfully. Return proper result
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Your file has been successfully uploaded.",
+		"files":   recvFiles,
 	})
+
+	utils.MergePdfFile(recvFiles)
 }
 
 func main() {
@@ -49,5 +56,8 @@ func main() {
 	})
 
 	router.POST("/merge", saveFileHandler)
+	router.GET("/merge", func(c *gin.Context) {
+	})
+
 	router.Run(":8080")
 }
