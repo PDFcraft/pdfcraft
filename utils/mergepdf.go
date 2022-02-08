@@ -25,6 +25,7 @@ func MergeHandler(c *gin.Context) {
 	}
 	recvFiles := make(map[int]string)
 	originName := make(map[string]string)
+	mergedName := make(map[string]string)
 	for i, file := range files {
 		extension := filepath.Ext(file.Filename)
 		originFileName := filepath.Base(file.Filename)
@@ -40,11 +41,15 @@ func MergeHandler(c *gin.Context) {
 		}
 
 	}
-	// var name = filepath.Ext(originName[recvFiles[0]])
 	var mergedFileName = originName[recvFiles[0]][0:len(originName[recvFiles[0]])-4] + "-merged" + ".pdf"
-	// var name = TrimRight(originName[recvFiles[0]], ".pdf")
-	mergePdfFile(recvFiles, mergedFileName)
-	c.File("./output/" + mergedFileName)
+	var newMergedName = uuid.New().String() + ".pdf"
+	mergePdfFile(recvFiles, newMergedName)
+	mergedName[mergedFileName] = newMergedName
+	c.JSON(http.StatusOK, gin.H{
+		"message":        "Your file has been successfully uploaded.",
+		"mergedFileName": mergedName,
+	})
+	// c.File("./output/" + mergedFileName)
 }
 
 func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
