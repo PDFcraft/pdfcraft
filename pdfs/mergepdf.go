@@ -1,4 +1,4 @@
-package utils
+package pdfs
 
 import (
 	"net/http"
@@ -45,6 +45,7 @@ func MergeHandler(c *gin.Context) {
 	var newMergedName = uuid.New().String() + ".pdf"
 	mergePdfFile(recvFiles, newMergedName)
 	mergedName[mergedFileName] = newMergedName
+	f = &FilePair{mergedFileName}
 	c.JSON(http.StatusOK, gin.H{
 		"message":        "Your file has been successfully uploaded.",
 		"mergedFileName": mergedName,

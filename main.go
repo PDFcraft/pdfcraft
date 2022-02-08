@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/pdfcraft/pdfcraft/utils"
+	"github.com/PDFcraft/pdfcraft/pdfs"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,9 +9,9 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.POST("/merge", utils.MergeHandler)
+	router.POST("/merge", pdfs.MergeHandler)
 
-	router.GET("/download=:fileid", utils.Download)
+	router.GET("/download=:fileid", pdfs.Download)
 
 	router.Run(":8080")
 }
