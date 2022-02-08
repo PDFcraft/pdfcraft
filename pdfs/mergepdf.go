@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/PDFcraft/pdfcraft/db"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	pdfcpu "github.com/pdfcpu/pdfcpu/pkg/api"
@@ -45,7 +46,7 @@ func MergeHandler(c *gin.Context) {
 	var newMergedName = uuid.New().String() + ".pdf"
 	mergePdfFile(recvFiles, newMergedName)
 	mergedName[mergedFileName] = newMergedName
-	f = &FilePair{mergedFileName}
+	db.SaveFileNamePair(newMergedName, mergedFileName)
 	c.JSON(http.StatusOK, gin.H{
 		"message":        "Your file has been successfully uploaded.",
 		"mergedFileName": mergedName,
