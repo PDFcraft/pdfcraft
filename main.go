@@ -1,7 +1,7 @@
 package main
 
 import (
-	"pdfcraft/utils"
+	"github.com/pdfcraft/pdfcraft/utils"
 
 	"github.com/gin-gonic/gin"
 )

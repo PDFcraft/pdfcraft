@@ -6,6 +6,6 @@ import (
 
 func Download(c *gin.Context) {
 	fileid := c.Param("fileid")
-	c.File("./output/" + fileid + ".pdf")
+	c.FileAttachment("./output/"+fileid+".pdf", "merged.pdf")
 
 }
