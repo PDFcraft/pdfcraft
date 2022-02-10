@@ -11,6 +11,11 @@ import (
 )
 
 func MergeHandler(c *gin.Context) {
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization, Origin")
+	c.Header("Access-Control-Allow-Credentials", "true")
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Header("Access-Control-Allow-Methods", "GET, DELETE, POST")
+	c.Next()
 	form, err := c.MultipartForm()
 	if err != nil {
 		c.String(http.StatusBadRequest, "get form err: %s", err.Error())
@@ -24,6 +29,8 @@ func MergeHandler(c *gin.Context) {
 		})
 		return
 	}
+
+	fileOrder := make(map[int]string)
 	recvFiles := make(map[int]string)
 	originName := make(map[string]string)
 	mergedName := make(map[string]string)
@@ -31,7 +38,7 @@ func MergeHandler(c *gin.Context) {
 		extension := filepath.Ext(file.Filename)
 		originFileName := filepath.Base(file.Filename)
 		newFileName := uuid.New().String() + extension
-		// Linking uuid with sent order with dict
+		fileOrder[i] = originFileName
 		recvFiles[i] = newFileName
 		originName[newFileName] = originFileName
 		if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
@@ -50,14 +57,15 @@ func MergeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message":        "Your file has been successfully uploaded.",
 		"mergedFileName": mergedName,
+		"originName":     originName,
+		"fileOrder":      fileOrder,
 	})
-	// c.File("./output/" + mergedFileName)
 }
 
 func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
 	inFiles := []string{}
-	for _, filename := range recvFiles {
-		inFiles = append(inFiles, "./temp/"+filename)
+	for i := 0; i < len(recvFiles); i++ {
+		inFiles = append(inFiles, "./temp/"+recvFiles[i])
 	}
 	pdfcpu.MergeCreateFile(inFiles, "./output/"+mergedFileName, nil)
 }

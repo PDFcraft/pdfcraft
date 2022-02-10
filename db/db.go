@@ -1,8 +1,6 @@
 package db
 
 import (
-	"fmt"
-
 	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/boltdb/bolt"
 )
@@ -25,7 +23,6 @@ func DB() *bolt.DB {
 }
 
 func SaveFileNamePair(uuidFileName string, originFileName string) {
-	fmt.Println("Here : SaveFileNamePair")
 	err := DB().Update(func(t *bolt.Tx) error {
 		bucket := t.Bucket([]byte("filename"))
 		err := bucket.Put([]byte(uuidFileName), []byte(originFileName))
