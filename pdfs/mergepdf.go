@@ -55,10 +55,7 @@ func MergeHandler(c *gin.Context) {
 	mergedName[mergedFileName] = newMergedName
 	db.SaveFileNamePair(newMergedName, mergedFileName)
 	c.JSON(http.StatusOK, gin.H{
-		"message":        "Your file has been successfully uploaded.",
 		"mergedFileName": mergedName,
-		"originName":     originName,
-		"fileOrder":      fileOrder,
 	})
 }
 
