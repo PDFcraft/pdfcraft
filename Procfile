@@ -1,1 +1,1 @@
-web: pdfcraft
+web: bin/pdfcraft
