@@ -1,1 +1,1 @@
-web: bin/pdfcraft
+web: go run main.go
