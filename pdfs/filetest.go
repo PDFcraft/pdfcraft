@@ -17,7 +17,6 @@ func FileTestHandler(c *gin.Context) {
 
 	file, err := c.FormFile("file")
 
-	// The file cannot be received.
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": "No file is received",
@@ -30,7 +29,6 @@ func FileTestHandler(c *gin.Context) {
 	originFileName := filepath.Base(file.Filename)
 	newFileName := uuid.New().String() + extension
 	originName[originFileName] = newFileName
-	// The file is received, so let's save it
 	if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"message": "Unable to save the file",
