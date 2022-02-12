@@ -35,7 +35,6 @@ func FileTestHandler(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"FileName": originName,
 	})
