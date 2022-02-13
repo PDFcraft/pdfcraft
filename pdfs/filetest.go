@@ -1,6 +1,7 @@
 package pdfs
 
 import (
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -14,16 +15,15 @@ func FileTestHandler(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
 	c.Header("Access-Control-Allow-Methods", "GET, DELETE, POST")
 	c.Next()
-
+	option := c.PostForm("option")
 	file, err := c.FormFile("file")
-
+	fmt.Println(option)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": "No file is received",
 		})
 		return
 	}
-
 	originName := make(map[string]string)
 	extension := filepath.Ext(file.Filename)
 	originFileName := filepath.Base(file.Filename)
