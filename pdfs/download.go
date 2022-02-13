@@ -13,6 +13,6 @@ func Download(c *gin.Context) {
 	c.Header("Access-Control-Allow-Methods", "GET, DELETE, POST")
 	c.Next()
 	originFileName := db.GetFileNamePair(fileid + ".pdf")
-	c.FileAttachment("./output/"+fileid+".pdf", originFileName)
+	c.FileAttachment("./files/output/"+fileid+".pdf", originFileName)
 
 }

@@ -29,7 +29,7 @@ func FileTestHandler(c *gin.Context) {
 	originFileName := filepath.Base(file.Filename)
 	newFileName := uuid.New().String() + extension
 	originName[originFileName] = newFileName
-	if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
+	if err := c.SaveUploadedFile(file, "./files/input/"+newFileName); err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 			"message": "Unable to save the file",
 		})
