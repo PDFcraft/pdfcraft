@@ -9,11 +9,11 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.POST("/filetest", pdfs.FileTestHandler)
+	router.POST("/api/filetest", pdfs.FileTestHandler)
 
-	router.POST("/merge", pdfs.MergeHandler)
+	router.POST("/api/merge", pdfs.MergeHandler)
 
-	router.GET("/download=:fileid", pdfs.Download)
+	router.GET("/api/download=:fileid", pdfs.Download)
 
 	router.Run(":8080")
 }
