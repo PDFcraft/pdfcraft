@@ -42,7 +42,7 @@ func MergeHandler(c *gin.Context) {
 		fileOrder[i] = originFileName
 		recvFiles[i] = newFileName
 		originName[newFileName] = originFileName
-		if err := c.SaveUploadedFile(file, "./temp/"+newFileName); err != nil {
+		if err := c.SaveUploadedFile(file, "./files/input/"+newFileName); err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
 				"message": "Unable to save the file",
 			})
@@ -63,7 +63,7 @@ func MergeHandler(c *gin.Context) {
 func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
 	inFiles := []string{}
 	for i := 0; i < len(recvFiles); i++ {
-		inFiles = append(inFiles, "./temp/"+recvFiles[i])
+		inFiles = append(inFiles, "./files/input/"+recvFiles[i])
 	}
-	pdfcpu.MergeCreateFile(inFiles, "./output/"+mergedFileName, nil)
+	pdfcpu.MergeCreateFile(inFiles, "./files/output/"+mergedFileName, nil)
 }

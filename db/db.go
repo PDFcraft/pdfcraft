@@ -9,7 +9,7 @@ var db *bolt.DB
 
 func DB() *bolt.DB {
 	if db == nil {
-		dbPointer, err := bolt.Open("mergedfilename.db", 0600, nil)
+		dbPointer, err := bolt.Open("pdfcraft.db", 0600, nil)
 		db = dbPointer
 		utils.HandleErr(err)
 		err = db.Update(func(t *bolt.Tx) error {
