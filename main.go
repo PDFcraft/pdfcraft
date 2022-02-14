@@ -15,5 +15,7 @@ func main() {
 
 	router.GET("/api/download=:fileid", pdfs.Download)
 
+	router.POST("/api/decrypt",pdfs.FileDecryptHandler)
+
 	router.Run(":8080")
 }

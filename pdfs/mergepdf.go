@@ -7,7 +7,7 @@ import (
 	"github.com/PDFcraft/pdfcraft/db"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	pdfcpu "github.com/pdfcpu/pdfcpu/pkg/api"
+	"github.com/pdfcpu/pdfcpu/pkg/api"
 )
 
 func MergeHandler(c *gin.Context) {
@@ -65,5 +65,5 @@ func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
 	for i := 0; i < len(recvFiles); i++ {
 		inFiles = append(inFiles, "./files/input/"+recvFiles[i])
 	}
-	pdfcpu.MergeCreateFile(inFiles, "./files/output/"+mergedFileName, nil)
+	api.MergeCreateFile(inFiles, "./files/output/"+mergedFileName, nil)
 }
