@@ -9,14 +9,12 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.POST("/api/filetest", pdfs.FileTestHandler)
-
 	router.POST("/api/merge", pdfs.MergeHandler)
 
 	router.GET("/api/download=:fileid", pdfs.Download)
 
-	router.POST("/api/decrypt", pdfs.FileDecryptHandler)
-	router.POST("/api/encrypt", pdfs.FileEncryptHandler)
+	router.POST("/api/unlock", pdfs.FileDecryptHandler)
+	router.POST("/api/protect", pdfs.FileEncryptHandler)
 
 	router.Run(":8080")
 }
