@@ -13,8 +13,8 @@ func main() {
 
 	router.GET("/api/download=:fileid", pdfs.Download)
 
-	router.POST("/api/decrypt", pdfs.FileDecryptHandler)
-	router.POST("/api/encrypt", pdfs.FileEncryptHandler)
+	router.POST("/api/unlock", pdfs.FileDecryptHandler)
+	router.POST("/api/protect", pdfs.FileEncryptHandler)
 
 	router.Run(":8080")
 }
