@@ -9,8 +9,6 @@ import (
 func main() {
 	router := gin.Default()
 
-	router.POST("/api/filetest", pdfs.FileTestHandler)
-
 	router.POST("/api/merge", pdfs.MergeHandler)
 
 	router.GET("/api/download=:fileid", pdfs.Download)
