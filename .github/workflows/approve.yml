@@ -8,7 +8,7 @@ on:
 jobs:
   # Check auto merge contiditons of PR and proceed merging
   automerge:
-    if: ${{ github.event.issue.pull_request && (contains('chobobdev mizzu-project', github.event.comment.user.login) || github.event.comment.author_association == 'OWNER') && startsWith(github.event.comment.body, '/approve') }}
+    if: ${{ github.event.issue.pull_request && (contains('chobobdev mizzu-project', github.event.comment.user.login) || github.event.comment.author_association == 'OWNER') && startsWith(github.event.comment.body, '/LGTM') }}
     runs-on: ubuntu-18.04
     steps:
       # Check author_association is OWNER
@@ -18,13 +18,13 @@ jobs:
           echo event.comment.author_association is ${{ github.event.comment.author_association }}
           echo Hello, this workflow is allowed to specific OWNERS.
       
-      # Apply 'approved' label when OWNER left '/approve' comment
+      # Apply 'LGTM' label when OWNER left '/LGTM' comment
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-add-labels@v1
         with:
           github_token: ${{ secrets.github_token }}
           labels: |
-            approved
+            LGTM
       
       # AutoMerging if this PR has MERGE_LABELS: approved, lgtm (not wip, hold)
       - name: automerge-lgtm-approved
@@ -33,7 +33,7 @@ jobs:
           args: "--trace"
         env:
           GITHUB_TOKEN: "${{ secrets.ACTION_TOKEN }}"
-          MERGE_LABELS: "approved,!wip,!hold"
+          MERGE_LABELS: "LGTM"
           MERGE_REMOVE_LABELS: ""
           MERGE_METHOD: "merge"
           MERGE_COMMIT_MESSAGE: "pull-request-title"
