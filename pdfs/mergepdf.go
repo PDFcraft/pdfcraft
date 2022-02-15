@@ -1,13 +1,18 @@
 package pdfs
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 )
 
 func MergeHandler(c *gin.Context) {
-	_, uuidOrder, processedUuidName := CommonHandler(c, "-merged")
+	_, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-merged")
 	mergePdfFile(uuidOrder, processedUuidName)
+	c.JSON(http.StatusOK, gin.H{
+		"FileName": fileNameDict,
+	})
 }
 
 func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
