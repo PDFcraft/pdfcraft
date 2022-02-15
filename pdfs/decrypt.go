@@ -1,6 +1,7 @@
 package pdfs
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,8 +13,9 @@ func FileDecryptHandler(c *gin.Context) {
 	password, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-unlcoked")
 	err := decryptPdfFile(uuidOrder[0], password, processedUuidName)
 	if err != nil {
+		errMsg := fmt.Sprintf("%s", err)
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err,
+			"message": errMsg,
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
