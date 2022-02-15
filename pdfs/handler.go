@@ -10,6 +10,9 @@ import (
 )
 
 func CommonHandler(c *gin.Context, feat string) (string, map[int]string, string, map[string]string) {
+	c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
+	c.Header("Access-Control-Allow-Methods", "POST,GET")
+	c.Next()
 	password := c.PostForm("options")
 	form, err := c.MultipartForm()
 	files := form.File["files"] //[]*multipart.FileHeader
