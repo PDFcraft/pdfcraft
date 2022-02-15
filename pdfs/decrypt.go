@@ -1,16 +1,28 @@
 package pdfs
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu"
 )
 
 func FileDecryptHandler(c *gin.Context) {
-	password, uuidOrder, processedUuidName := CommonHandler(c, "-unlcoked")
-	decryptPdfFile(uuidOrder[0], password, processedUuidName)
+	password, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-unlcoked")
+	err := decryptPdfFile(uuidOrder[0], password, processedUuidName)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": err,
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"FileName": fileNameDict,
+		})
+	}
 }
-func decryptPdfFile(uuidFileName string, filePassword string, processedFileName string) {
+func decryptPdfFile(uuidFileName string, filePassword string, processedFileName string) error {
 	config := pdfcpu.NewAESConfiguration(filePassword, filePassword, 256)
-	api.DecryptFile("./files/input/"+uuidFileName, "./files/output/"+processedFileName, config)
+	err := api.DecryptFile("./files/input/"+uuidFileName, "./files/output/"+processedFileName, config)
+	return err
 }

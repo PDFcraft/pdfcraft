@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func CommonHandler(c *gin.Context, feat string) (string, map[int]string, string) {
+func CommonHandler(c *gin.Context, feat string) (string, map[int]string, string, map[string]string) {
 	password := c.PostForm("options")
 	form, err := c.MultipartForm()
 	files := form.File["files"] //[]*multipart.FileHeader
@@ -38,10 +38,6 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, string)
 	fileNameDict[processedFileName] = processedUuidName
 	db.SaveFileNamePair(processedUuidName, processedFileName)
 
-	c.JSON(http.StatusOK, gin.H{
-		"FileName": fileNameDict,
-	})
-
-	return password, uuidOrder, processedUuidName
+	return password, uuidOrder, processedUuidName, fileNameDict
 
 }
