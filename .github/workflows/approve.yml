@@ -32,7 +32,7 @@ jobs:
         with:
           args: "--trace"
         env:
-          GITHUB_TOKEN: "${{ secrets.TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.ACTION_TOKEN }}"
           MERGE_LABELS: "approved,lgtm,!wip,!hold"
           MERGE_REMOVE_LABELS: ""
           MERGE_METHOD: "merge"
