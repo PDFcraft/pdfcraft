@@ -20,7 +20,7 @@ func imgToPdf(uuidImgOrder map[int]string, processedUuidName string) {
 	for i := 0; i < len(uuidImgOrder); i++ {
 		inFiles = append(inFiles, "./files/input/"+uuidImgOrder[i])
 	}
-	imp, _ := api.Import("form:A4, pos:c, s:1.0", pdfcpu.POINTS)
+	imp, _ := api.Import("form:A4, pos:c, sc:1.0 rel", pdfcpu.POINTS)
 	api.ImportImagesFile(inFiles, "./files/output/"+processedUuidName, imp, nil)
-	api.RotateFile("./files/output/"+processedUuidName, "", 180, nil, nil)
+	// api.RotateFile("./files/output/"+processedUuidName, "", 180, nil, nil)
 }
