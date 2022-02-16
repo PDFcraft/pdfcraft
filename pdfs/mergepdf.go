@@ -8,17 +8,17 @@ import (
 )
 
 func MergeHandler(c *gin.Context) {
-	_, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-merged")
+	_, uuidOrder, _, processedUuidName, fileNameDict := CommonHandler(c, "-merged")
 	mergePdfFile(uuidOrder, processedUuidName)
 	c.JSON(http.StatusOK, gin.H{
 		"FileName": fileNameDict,
 	})
 }
 
-func mergePdfFile(recvFiles map[int]string, mergedFileName string) {
+func mergePdfFile(uuidOrder map[int]string, processedFileName string) {
 	inFiles := []string{}
-	for i := 0; i < len(recvFiles); i++ {
-		inFiles = append(inFiles, "./files/input/"+recvFiles[i])
+	for i := 0; i < len(uuidOrder); i++ {
+		inFiles = append(inFiles, "./files/input/"+uuidOrder[i])
 	}
-	api.MergeCreateFile(inFiles, "./files/output/"+mergedFileName, nil)
+	api.MergeCreateFile(inFiles, "./files/output/"+processedFileName, nil)
 }

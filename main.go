@@ -14,6 +14,7 @@ func main() {
 
 	router.POST("/api/unlock", pdfs.FileDecryptHandler)
 	router.POST("/api/protect", pdfs.FileEncryptHandler)
+	router.POST("/api/topdf", pdfs.ImgConvertHandler)
 
 	router.Run(":8080")
 
