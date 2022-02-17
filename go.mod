@@ -20,6 +20,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hhrutter/lzw v0.0.0-20190829144645-6f07a24e8650 // indirect
 	github.com/hhrutter/tiff v0.0.0-20190829141212-736cae8d0bc7 // indirect
+	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

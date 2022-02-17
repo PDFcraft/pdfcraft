@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/PDFcraft/pdfcraft/db"
+	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -55,8 +56,10 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 	}
 	if len(fileOrder) > 1 {
 		processedFileName = fileOrder[0][0:len(fileOrder[0])-4] + feat + ".pdf"
+		utils.FileRecvLogger(uuidOrder)
 	} else {
 		processedFileName = imgOrder[0][0:len(imgOrder[0])-4] + feat + ".pdf"
+		utils.FileRecvLogger(imgUuidOrder)
 	}
 
 	fileNameDict[processedFileName] = processedUuidName

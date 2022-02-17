@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/PDFcraft/pdfcraft/pdfs"
+	"github.com/PDFcraft/pdfcraft/utils"
+	"github.com/jasonlvhit/gocron"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,6 +18,11 @@ func main() {
 	router.POST("/api/protect", pdfs.FileEncryptHandler)
 	router.POST("/api/topdf", pdfs.ImgConvertHandler)
 
-	router.Run(":8080")
+	go func() {
+		s := gocron.NewScheduler()
+		s.Every(3).Seconds().Do(utils.FileDeleteLogger)
+		<-s.Start()
+	}()
 
+	router.Run(":8080")
 }
