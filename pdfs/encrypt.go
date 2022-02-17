@@ -1,6 +1,7 @@
 package pdfs
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,8 @@ import (
 )
 
 func FileEncryptHandler(c *gin.Context) {
-	password, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-lcoked")
+	password, uuidOrder, _, processedUuidName, fileNameDict := CommonHandler(c, "-lcoked")
+	fmt.Println(uuidOrder)
 	encryptPdfFile(uuidOrder[0], password, processedUuidName)
 	c.JSON(http.StatusOK, gin.H{
 		"FileName": fileNameDict,

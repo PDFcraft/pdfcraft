@@ -10,7 +10,7 @@ import (
 )
 
 func FileDecryptHandler(c *gin.Context) {
-	password, uuidOrder, processedUuidName, fileNameDict := CommonHandler(c, "-unlcoked")
+	password, uuidOrder, _, processedUuidName, fileNameDict := CommonHandler(c, "-unlcoked")
 	err := decryptPdfFile(uuidOrder[0], password, processedUuidName)
 	if err != nil {
 		errMsg := fmt.Sprintf("%s", err)
