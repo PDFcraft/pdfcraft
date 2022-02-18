@@ -20,7 +20,7 @@ func main() {
 
 	go func() {
 		s := gocron.NewScheduler()
-		s.Every(3).Seconds().Do(utils.FileDeleteLogger)
+		s.Every(1).Minutes().Do(utils.FileDeleteLogger)
 		<-s.Start()
 	}()
 

@@ -2,45 +2,60 @@ package utils
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
-type FileStatStruct struct {
-	CurrentTime time.Time
-	FileName    string
-	TimeDiff    int32
-}
-
-type logWriter struct {
-}
-
-func (writer logWriter) Write(bytes []byte) (int, error) {
-	return fmt.Print(string(bytes))
-}
+const (
+	green   = "\033[97;42m"
+	yellow  = "\033[90;43m"
+	red     = "\033[97;41m"
+	magenta = "\033[97;45m"
+	cyan    = "\033[97;46m"
+	reset   = "\033[0m"
+)
 
 func FileDeleteLogger() {
-	log.SetFlags(0)
-	log.SetOutput(new(logWriter))
-	currentTime := time.Now()
-	inFiles, _ := ioutil.ReadDir("./files/input")
-	for _, inFile := range inFiles {
-		timeDiff := int32(currentTime.Sub(inFile.ModTime()).Minutes())
-		log.Println(inFile.Name(), timeDiff, "ms Ago")
-	}
-	outFiles, _ := ioutil.ReadDir("./files/input")
-	for _, outFile := range outFiles {
-		timeDiff := int32(currentTime.Sub(outFile.ModTime()).Minutes())
-		log.Println(outFile.Name(), timeDiff, "ms Ago")
-	}
-
+	iterate("./files")
 }
 
 func FileRecvLogger(recevedFiles map[int]string) {
+	currentTime := time.Now()
 	for i := 0; i < len(recevedFiles); i++ {
 		file, _ := os.Stat("./files/input/" + recevedFiles[i])
-		log.Println(file.Name(), file.ModTime())
+		timeDiff := int32(currentTime.Sub(file.ModTime()).Minutes())
+		fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", cyan, "INPUT", reset, file.Name(), timeDiff, "mS Ago", green, "RECIEVED", reset)
 	}
+}
+
+func iterate(path string) {
+	currentTime := time.Now()
+	filepath.Walk(path, func(path string, file os.FileInfo, err error) error {
+		if err != nil {
+			log.Fatalf(err.Error())
+		}
+		if !file.IsDir() && !(file.Name() == ".gitkeep") {
+			timeDiff := int32(currentTime.Sub(file.ModTime()).Minutes())
+			filepath := "OUTPUT"
+			pathcolor := magenta
+			status := "KEPT"
+			statcolor := yellow
+			if strings.Contains(path, "input") {
+				pathcolor = cyan
+				filepath = "INPUT"
+			}
+			if timeDiff > 60 {
+				status = "DELETED"
+				statcolor = red
+			}
+			fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", pathcolor, filepath, reset, file.Name(), timeDiff, "mS Ago", statcolor, status, reset)
+			if timeDiff > 60 {
+				os.Remove(path)
+			}
+		}
+		return nil
+	})
 }
