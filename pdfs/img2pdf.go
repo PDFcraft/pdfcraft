@@ -3,6 +3,7 @@ package pdfs
 import (
 	"net/http"
 
+	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu"
@@ -14,6 +15,7 @@ func ImgConvertHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"FileName": fileNameDict,
 	})
+	utils.FileProcessedLogger(processedUuidName, "IMG2PDF")
 }
 func imgToPdf(uuidImgOrder map[int]string, processedUuidName string) {
 	inFiles := []string{}

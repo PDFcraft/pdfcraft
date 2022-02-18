@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu"
@@ -22,6 +23,7 @@ func FileDecryptHandler(c *gin.Context) {
 			"FileName": fileNameDict,
 		})
 	}
+	utils.FileProcessedLogger(processedUuidName, "DECRYPTED")
 }
 func decryptPdfFile(uuidFileName string, filePassword string, processedFileName string) error {
 	config := pdfcpu.NewAESConfiguration(filePassword, filePassword, 256)

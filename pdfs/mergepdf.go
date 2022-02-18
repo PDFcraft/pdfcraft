@@ -3,6 +3,7 @@ package pdfs
 import (
 	"net/http"
 
+	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 )
@@ -13,6 +14,7 @@ func MergeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"FileName": fileNameDict,
 	})
+	utils.FileProcessedLogger(processedUuidName, "MERGED")
 }
 
 func mergePdfFile(uuidOrder map[int]string, processedFileName string) {
