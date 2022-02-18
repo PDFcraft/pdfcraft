@@ -15,11 +15,20 @@ const (
 	red     = "\033[97;41m"
 	magenta = "\033[97;45m"
 	cyan    = "\033[97;46m"
+	blue    = "\033[97;44m"
 	reset   = "\033[0m"
 )
 
 func FileDeleteLogger() {
 	iterate("./files")
+}
+
+func FileProcessedLogger(ProcessedFiles string, processname string) {
+	currentTime := time.Now()
+	file, _ := os.Stat("./files/output/" + ProcessedFiles)
+	timeDiff := int32(currentTime.Sub(file.ModTime()).Minutes())
+	fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", magenta, "OUTPUT", reset, file.Name(), timeDiff, "mS Ago", blue, processname, reset)
+
 }
 
 func FileRecvLogger(recevedFiles map[int]string) {
