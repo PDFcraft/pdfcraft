@@ -27,7 +27,7 @@ func FileProcessedLogger(ProcessedFiles string, processname string) {
 	currentTime := time.Now()
 	file, _ := os.Stat("./files/output/" + ProcessedFiles)
 	timeDiff := int32(currentTime.Sub(file.ModTime()).Minutes())
-	fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", magenta, "OUTPUT", reset, file.Name(), timeDiff, "mS Ago", blue, processname, reset)
+	fmt.Printf("[PDFCRAFT] |%s %-7s %s| %-42s | %5d %s |%s %-9s %s|\n", magenta, "OUTPUT", reset, file.Name(), timeDiff, "mS Ago", blue, processname, reset)
 
 }
 
@@ -36,7 +36,7 @@ func FileRecvLogger(recevedFiles map[int]string) {
 	for i := 0; i < len(recevedFiles); i++ {
 		file, _ := os.Stat("./files/input/" + recevedFiles[i])
 		timeDiff := int32(currentTime.Sub(file.ModTime()).Minutes())
-		fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", cyan, "INPUT", reset, file.Name(), timeDiff, "mS Ago", green, "RECIEVED", reset)
+		fmt.Printf("[PDFCRAFT] |%s %-7s %s| %-42s | %5d %s |%s %-9s %s|\n", cyan, "INPUT", reset, file.Name(), timeDiff, "mS Ago", green, "RECIEVED", reset)
 	}
 }
 
@@ -60,7 +60,7 @@ func iterate(path string) {
 				status = "DELETED"
 				statcolor = red
 			}
-			fmt.Printf("[PDFCRAFT] |%s %-7s %s| %s | %5d %s |%s %-9s %s|\n", pathcolor, filepath, reset, file.Name(), timeDiff, "mS Ago", statcolor, status, reset)
+			fmt.Printf("[PDFCRAFT] |%s %-7s %s| %-42s | %5d %s |%s %-9s %s|\n", pathcolor, filepath, reset, file.Name(), timeDiff, "mS Ago", statcolor, status, reset)
 			if timeDiff > 60 {
 				os.Remove(path)
 			}
