@@ -1,7 +1,13 @@
 package pdfs
 
 import (
+	"image"
 	"net/http"
+	"os"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"github.com/PDFcraft/pdfcraft/utils"
 	"github.com/gin-gonic/gin"
@@ -18,11 +24,17 @@ func ImgConvertHandler(c *gin.Context) {
 	utils.FileProcessedLogger(processedUuidName, "IMG2PDF")
 }
 func imgToPdf(uuidImgOrder map[int]string, processedUuidName string) {
-	inFiles := []string{}
 	for i := 0; i < len(uuidImgOrder); i++ {
-		inFiles = append(inFiles, "./files/input/"+uuidImgOrder[i])
+		imgFile, _ := os.Open("./files/input/" + uuidImgOrder[i])
+		imageConfig, _, _ := image.DecodeConfig(imgFile)
+		if imageConfig.Width >= imageConfig.Height {
+			imp, _ := api.Import("form:A4L, pos:c, sc:0.7 rel", pdfcpu.POINTS)
+			api.ImportImagesFile([]string{"./files/input/" + uuidImgOrder[i]}, "./files/output/"+processedUuidName, imp, nil)
+		} else {
+			imp, _ := api.Import("form:A4P, pos:c, sc:0.7 rel", pdfcpu.POINTS)
+			api.ImportImagesFile([]string{"./files/input/" + uuidImgOrder[i]}, "./files/output/"+processedUuidName, imp, nil)
+		}
 	}
-	imp, _ := api.Import("form:A4, pos:c, sc:1.0 rel", pdfcpu.POINTS)
-	api.ImportImagesFile(inFiles, "./files/output/"+processedUuidName, imp, nil)
+
 	// api.RotateFile("./files/output/"+processedUuidName, "", 180, nil, nil)
 }
