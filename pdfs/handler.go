@@ -1,6 +1,7 @@
 package pdfs
 
 import (
+	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -15,6 +16,7 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 	c.Header("Access-Control-Allow-Methods", "POST,GET")
 	c.Next()
 	password := c.PostForm("options")
+	fmt.Print(password)
 	form, err := c.MultipartForm()
 	files := form.File["files"] //[]*multipart.FileHeader
 	imgs := form.File["imgs"]
@@ -54,7 +56,7 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 			})
 		}
 	}
-	if len(fileOrder) > 1 {
+	if len(fileOrder) > 0 {
 		processedFileName = fileOrder[0][0:len(fileOrder[0])-4] + feat + ".pdf"
 		utils.FileRecvLogger(uuidOrder)
 	} else {
