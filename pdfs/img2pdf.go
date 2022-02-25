@@ -35,6 +35,4 @@ func imgToPdf(uuidImgOrder map[int]string, processedUuidName string) {
 			api.ImportImagesFile([]string{"./files/input/" + uuidImgOrder[i]}, "./files/output/"+processedUuidName, imp, nil)
 		}
 	}
-
-	// api.RotateFile("./files/output/"+processedUuidName, "", 180, nil, nil)
 }

@@ -18,7 +18,7 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 	password := c.PostForm("options")
 	fmt.Print(password)
 	form, err := c.MultipartForm()
-	files := form.File["files"] //[]*multipart.FileHeader
+	files := form.File["files"]
 	imgs := form.File["imgs"]
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
