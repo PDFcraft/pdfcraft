@@ -18,6 +18,7 @@ func main() {
 	router.POST("/api/protect", pdfs.FileEncryptHandler)
 	router.POST("/api/topdf", pdfs.ImgConvertHandler)
 	router.POST("/api/split", pdfs.SplitHandler)
+	router.POST("/api/rotate", pdfs.FileRotateHandler)
 
 	go func() {
 		s := gocron.NewScheduler()
