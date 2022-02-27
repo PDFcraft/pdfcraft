@@ -1,7 +1,6 @@
 package pdfs
 
 import (
-	"fmt"
 	"net/http"
 	"path/filepath"
 
@@ -16,7 +15,6 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 	c.Header("Access-Control-Allow-Methods", "POST,GET")
 	c.Next()
 	password := c.PostForm("options")
-	fmt.Print(password)
 	form, err := c.MultipartForm()
 	files := form.File["files"]
 	imgs := form.File["imgs"]
@@ -28,8 +26,13 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 	fileOrder := make(map[int]string)
 	uuidOrder := make(map[int]string)
 	fileNameDict := make(map[string]string)
-	processedUuidName := uuid.New().String() + ".pdf"
+	var processedUuidName string
 	var processedFileName string
+	if feat == "split" {
+		processedUuidName = uuid.New().String()
+	} else {
+		processedUuidName = uuid.New().String() + ".pdf"
+	}
 	for i, file := range files {
 		fileExtension := filepath.Ext(file.Filename)
 		originFileName := filepath.Base(file.Filename)
@@ -57,8 +60,13 @@ func CommonHandler(c *gin.Context, feat string) (string, map[int]string, map[int
 		}
 	}
 	if len(fileOrder) > 0 {
-		processedFileName = fileOrder[0][0:len(fileOrder[0])-4] + feat + ".pdf"
-		utils.FileRecvLogger(uuidOrder)
+		if feat != "split" {
+			processedFileName = fileOrder[0][0:len(fileOrder[0])-4] + feat + ".pdf"
+			utils.FileRecvLogger(uuidOrder)
+		} else {
+			processedFileName = fileOrder[0][0 : len(fileOrder[0])-4]
+		}
+
 	} else {
 		processedFileName = imgOrder[0][0:len(imgOrder[0])-4] + feat + ".pdf"
 		utils.FileRecvLogger(imgUuidOrder)
